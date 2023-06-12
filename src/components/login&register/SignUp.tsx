@@ -1,14 +1,37 @@
 import { useMemo, useState } from "react";
-import {Card,CardContent,TextField,Typography,Button,InputAdornment,IconButton} from "@mui/material";
+import { styled } from '@mui/material/styles';
+import { useFormik } from "formik";
+import { Sign_Up_Person } from "../../constant/model";
+import { signUpSchema } from "../../validation/validation";
+import {Card,CardContent,TextField,Typography,Button,InputAdornment,IconButton, CardActions} from "@mui/material";
+import {ContactEmergencyRounded,ContactMailRounded,RemoveRedEyeRounded,FiberManualRecordRounded,VisibilityOffRounded,CheckRounded} from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
-import {ContactEmergencyRounded,ContactMailRounded,RemoveRedEyeRounded,FiberManualRecordRounded,VisibilityOffRounded,KeyRounded} from '@mui/icons-material';
 import bgLoginLg from "../../assets/images/xx.jpg";
 import bgLoginSm from "../../assets/images/yy.jpg";
-import { styled } from '@mui/material/styles';
 
 
 const SignUp = () => {
   const [showPass,setShowPass] = useState<boolean>(false);
+
+
+  const initialInputNames:Sign_Up_Person = {
+    firstname:"",
+    lastname:"",
+    email:"",
+    password:"",
+    confirmPass:""
+  };
+  const formik = useFormik({
+    initialValues:initialInputNames,
+    onSubmit: (values:Sign_Up_Person) => {
+      console.log("values: ",values);
+      
+    },
+    validationSchema:signUpSchema
+  });
+
+
+
   
   const CssTextField = useMemo(() => {
     return (
@@ -43,16 +66,29 @@ const SignUp = () => {
   return (
     <Card sx={{height:"100vh",backgroundImage:{
       xs:`url(${bgLoginSm})`,
-      lg:`url(${bgLoginLg})`
+      md:`url(${bgLoginLg})`
     },backgroundRepeat:"no-repeat",backgroundSize:"cover",borderRadius:0}}>
       <Grid container sx={{height:"100vh",alignContent:"center",p:5}}>
-        <Grid xs={12} sm={12} md={5}>
-          <CardContent>
+        <Grid xs={12} sm={12} md={5} sx={{backgroundColor:{
+          xs:"#3f4143a1",
+          md:"#3a3e187a"
+        },py:{
+          xs:2,
+          sm:2,
+          md:3,
+          lg:4,
+          xl:13
+        },borderRadius:5}}>
+          <CardContent sx={{mb:3}}>
             <Typography variant="body2" color="white" fontSize="small">START FOR FREE</Typography>
-            <Typography variant="h2" display="block" color="white">Create new account<Typography variant="h3" color="primary" display="inline"><FiberManualRecordRounded fontSize="small"/></Typography></Typography>
+            <Typography sx={{fontSize:{
+              xs:"1.75rem",
+              md:"2.75rem",
+              xl:"3.75rem"
+            }}} display="block" color="white">Create new account<Typography variant="h3" color="primary" display="inline"><FiberManualRecordRounded fontSize="small"/></Typography></Typography>
             <Typography variant="subtitle2" display="inline" color="white">Already A Member? <Typography color="primary" display="inline">Log in</Typography></Typography>
           </CardContent>
-          <form autoComplete="off">
+          <form autoComplete="off" onSubmit={formik.handleSubmit}>
             <CardContent>
               <Grid container spacing={2}>
                 <Grid xs={12} md={6}>
@@ -63,9 +99,11 @@ const SignUp = () => {
                     size="small"
                     variant="outlined"
                     color="primary"
-                    inputProps={{
-                      color:"white"
-                    }}
+                    name="firstname"
+                    helperText={formik.touched.firstname ? formik.errors.firstname : null}
+                    error={Boolean(formik.touched.firstname && formik.errors.firstname)}
+                    value={formik.values?.firstname}
+                    onChange={formik.handleChange}
                     label="first name"
                     InputProps={{
                       endAdornment:(
@@ -84,6 +122,11 @@ const SignUp = () => {
                     size="small"
                     variant="outlined"
                     color="primary"
+                    name="lastname"
+                    helperText={formik.touched.lastname ? formik.errors.firstname : null}
+                    error={Boolean(formik.touched.lastname && formik.errors.lastname)}
+                    value={formik.values?.lastname}
+                    onChange={formik.handleChange}
                     label="last name"
                     InputProps={{
                       endAdornment:(
@@ -101,6 +144,11 @@ const SignUp = () => {
                     size="small"
                     variant="outlined"
                     color="primary"
+                    name="email"
+                    helperText={formik.touched.email ? formik.errors.email : null}
+                    error={Boolean(formik.touched.email && formik.errors.email)}
+                    value={formik.values?.email}
+                    onChange={formik.handleChange}
                     label="Email"
                     InputProps={{
                       endAdornment:(
@@ -118,6 +166,11 @@ const SignUp = () => {
                       size="small"
                       variant="outlined"
                       color="primary"
+                      name="password"
+                      helperText={formik.touched.password ? formik.errors.password : null}
+                      error={Boolean(formik.touched.password && formik.errors.password)}
+                      value={formik.values?.password}
+                      onChange={formik.handleChange}
                       label="Password"
                       InputProps={{
                         endAdornment:(
@@ -137,21 +190,26 @@ const SignUp = () => {
                       size="small"
                       variant="outlined"
                       color="primary"
-                      label="Conform password"
+                      name="confirmPass"
+                      helperText={formik.touched.confirmPass ? formik.errors.confirmPass : null}
+                      error={Boolean(formik.touched.confirmPass && formik.errors.confirmPass)}
+                      value={formik.values?.confirmPass}
+                      onChange={formik.handleChange}
+                      label="Confirm password"
                       InputProps={{
                         endAdornment:(
                           <InputAdornment position="end">
-                            <KeyRounded sx={{color:"#A0AAB4"}}/>
+                            <CheckRounded sx={{color:"#A0AAB4"}}/>
                           </InputAdornment>
                         )
                       }}
                     />
                 </Grid>
-                <Grid xs={12}>
-                  <Button variant="contained" fullWidth>Create Account</Button>
-                </Grid>
               </Grid>
             </CardContent>
+            <CardActions>
+              <Button type="submit" variant="contained" sx={{mt:2}} fullWidth>Create Account</Button>
+            </CardActions>
           </form>
         </Grid>
       </Grid>
