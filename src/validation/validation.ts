@@ -7,3 +7,8 @@ export const signUpSchema = YUP.object().shape({
     password:YUP.string().required(),
     confirmPass:YUP.string().required().oneOf([YUP.ref("password")])
 });
+
+export const loginSchema = YUP.object().shape({
+    username:YUP.string().required().email(),
+    password:YUP.string().required()
+})
