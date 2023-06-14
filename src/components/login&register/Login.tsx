@@ -3,9 +3,26 @@ import {CardActions, CardContent,Typography,Button, TextField, InputAdornment,Fo
 import {FiberManualRecordRounded,PersonRounded,VisibilityOffRounded,RemoveRedEyeRounded,Google} from "@mui/icons-material";
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Unstable_Grid2';
+import { useFormik } from "formik";
+import { Login_Person } from "../../constant/model";
+import { loginSchema } from "../../validation/validation";
 
 const Login = () => {
   const [showPass,setShowPass] = useState<boolean>(false)
+
+  const initialLoginData: Login_Person ={
+    username:"",
+    password:""
+  };
+
+  const formik = useFormik({
+    initialValues:initialLoginData,
+    onSubmit: (values:Login_Person) => {
+      console.log(values);
+    },
+    validationSchema:loginSchema
+  });
+
 
   const CssTextField = useMemo(() => {
     return (
@@ -46,7 +63,7 @@ const Login = () => {
         }}} display="block" color="white">Welcome back<Typography variant="h3" color="primary" display="inline"><FiberManualRecordRounded fontSize="small"/></Typography></Typography>
         <Typography variant="subtitle2" display="inline" color="whitesmoke">welcome back! Please enter your details.</Typography>
       </CardContent>
-      <form autoComplete="off">
+      <form autoComplete="off" onSubmit={formik.handleSubmit}>
         <CardContent>
           <Grid container spacing={2}>
             <Grid xs={12}>
@@ -56,7 +73,11 @@ const Login = () => {
                 size="small"
                 id="outlined-basic"
                 variant="outlined"
-                name="email"
+                name="username"
+                helperText={formik.touched.username ? formik.errors.username : null}
+                error={Boolean(formik.touched.username && formik.errors.username)}
+                value={formik.values?.username}
+                onChange={formik.handleChange}
                 label="Enter your email"
                 InputProps={{
                   endAdornment:(
@@ -76,12 +97,15 @@ const Login = () => {
                 variant="outlined"
                 name="password"
                 label="Password"
+                helperText={formik.touched.password ? formik.errors.password : null}
+                error={Boolean(formik.touched.password && formik.errors.password)}
+                value={formik.values?.password}
+                onChange={formik.handleChange}
                 InputProps={{
                   endAdornment:(
                     <InputAdornment position="end">
-                      <IconButton aria-label="toggle password visibility" onClick={() => setShowPass(!showPass)}>
+                      <IconButton sx={{p:0}} aria-label="toggle password visibility" onClick={() => setShowPass(!showPass)}>
                         {showPass ? <VisibilityOffRounded sx={{color:"#A0AAB4"}}/> : <RemoveRedEyeRounded sx={{color:"#A0AAB4"}}/>}
-                        
                       </IconButton>
                     </InputAdornment>
                   )
@@ -104,8 +128,8 @@ const Login = () => {
         </Grid>
       </CardContent>
       <CardActions sx={{px:2,flexDirection:"column",alignItems:"flex-end"}}>
-          <Button type="submit" variant="contained" fullWidth>Create Account</Button>
-          <Button type="submit" variant="outlined" fullWidth startIcon={<Google/>}  sx={{mt:2,color:"whitesmoke"}}>Sign in with Google</Button>
+          <Button variant="contained" fullWidth onClick={() => {formik.handleSubmit()}}>sign in</Button>
+          <Button variant="outlined" fullWidth startIcon={<Google/>}  sx={{mt:2,color:"whitesmoke"}}>Sign in with Google</Button>
       </CardActions>
     </>
   )
