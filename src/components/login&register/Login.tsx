@@ -1,10 +1,11 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {CardActions, CardContent,Typography,Button, TextField, InputAdornment,FormGroup,FormControlLabel,Checkbox, IconButton} from "@mui/material";
-import { styled } from '@mui/material/styles';
 import {FiberManualRecordRounded,PersonRounded,VisibilityOffRounded,RemoveRedEyeRounded,Google} from "@mui/icons-material";
+import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Unstable_Grid2';
 
 const Login = () => {
+  const [showPass,setShowPass] = useState<boolean>(false)
 
   const CssTextField = useMemo(() => {
     return (
@@ -55,8 +56,8 @@ const Login = () => {
                 size="small"
                 id="outlined-basic"
                 variant="outlined"
-                name="username"
-                label="username"
+                name="email"
+                label="Enter your email"
                 InputProps={{
                   endAdornment:(
                     <InputAdornment position="end">
@@ -69,17 +70,18 @@ const Login = () => {
             <Grid xs={12}>
               <CssTextField
                 fullWidth
-                type="password"
+                type={showPass ? "text" : "password"}
                 size="small"
                 id="outlined-basic"
                 variant="outlined"
                 name="password"
-                label="password"
+                label="Password"
                 InputProps={{
                   endAdornment:(
                     <InputAdornment position="end">
-                      <IconButton aria-label="toggle password visibility">
-                        <RemoveRedEyeRounded sx={{color:"#A0AAB4"}}/>
+                      <IconButton aria-label="toggle password visibility" onClick={() => setShowPass(!showPass)}>
+                        {showPass ? <VisibilityOffRounded sx={{color:"#A0AAB4"}}/> : <RemoveRedEyeRounded sx={{color:"#A0AAB4"}}/>}
+                        
                       </IconButton>
                     </InputAdornment>
                   )
