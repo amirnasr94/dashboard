@@ -5,3 +5,8 @@ export interface Sign_Up_Person {
     password:string,
     confirmPass:string
 }
+
+export interface Login_Person{
+    username:string,
+    password:string
+}
