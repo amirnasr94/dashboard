@@ -3,8 +3,10 @@ import { SignUp } from "..";
 import bgLoginLg from "../../assets/images/bg-lg.jpg";
 import bgLoginSm from "../../assets/images/bg-sm.jpg";
 import Grid from '@mui/material/Unstable_Grid2';
+import Login from "./Login";
 
 const Container = () => {
+  
   return (
     <Card sx={{height:"100vh",backgroundImage:{
         xs:`url(${bgLoginSm})`,
@@ -21,7 +23,8 @@ const Container = () => {
             lg:4,
             xl:13
           },borderRadius:5}}>
-            <SignUp/>
+            {/* <SignUp/> */}
+            <Login/>
         </Grid>
       </Grid>
     </Card>
